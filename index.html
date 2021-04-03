@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+
+    <div class="dragDropGround" id="id2" ondragover="onDragover(event)" ondrop="drop_handler(event)">
+        <div id="boxId" class="box">
+
+        </div>
+        <div draggable="true" id="circleId" ondragover="onDragover(event)" ondragstart="onDragStart(event)"
+            ondragend="onDragLeave(event)" class="circle">
+        </div>
+    </div>
+    <!-- <script>
+        for (var i = 0; i < 10; i++) {
+            (function (i) {//IIFE tạo ra một scope khác cho từng i, nên giá trị của i là khác nhau
+                setTimeout(function () {
+                    console.log(i);
+                });
+            })(i);//biến i ở đây được tạo riêng cho từng IIFE 
+        }
+    </script> -->
+    <script>
+        let offsetX;
+        let offsetY;
+        let circle = document.getElementById("circleId");
+        let id2 = document.getElementById('id2')
+        let boxId = document.getElementById("boxId");
+
+        function onDragStart(ev) {
+            const rect = ev.target.getBoundingClientRect();
+            offsetX = ev.clientX - rect.x;
+            offsetY = ev.clientY - rect.y;
+        };
+
+
+        function drop_handler(ev) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+            const left = id2.style.left === "" ? 0 : parseInt(id2.style.left);
+            const top = id2.style.top === "" ? 0 : parseInt(id2.style.top);
+            circle.style.left = ev.clientX - left - offsetX + 'px';
+            circle.style.top = ev.clientY - top - offsetY + 'px';
+        }
+
+        function onDragover(ev) {
+            ev.preventDefault();
+            circle.style.opacity = "0"
+        }
+        function onDragLeave(ev) {
+            circle.style.opacity = "1"
+            console.log(ev);
+            if (ev.clientX > 110 || ev.clientY > 120) {
+                circle.style.backgroundColor = "green"
+            }
+            else {
+                circle.style.backgroundColor = "red"
+            }
+        }
+    </script>
+</body>
+
+</html>
